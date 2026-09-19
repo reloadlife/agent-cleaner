@@ -9,6 +9,7 @@ Supports Claude Code, Cursor, Codex, Grok, OpenCode, and Gemini CLI. Local only.
 Needs [Bun](https://bun.sh) 1.2+.
 
 ```bash
+git clone https://github.com/reloadlife/agent-cleaner.git
 cd agent-cleaner
 bun install
 bun src/cli.ts
@@ -65,6 +66,13 @@ bun run typecheck
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Docs
+
+- [Usage](docs/usage.md) — TUI keys, web, headless CLI
+- [Architecture](docs/architecture.md) — scan, plans, backups
+- [Agents](docs/agents.md) — paths and what each adapter reads
+- [Security](SECURITY.md)
 
 ## License
 

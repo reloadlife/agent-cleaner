@@ -4,6 +4,14 @@
   "description": "Scan, install, and uninstall skills, hooks, MCPs, and plugins across Claude Code, Cursor, Codex, Grok, OpenCode, and Gemini CLI.",
   "license": "MIT",
   "author": "Mohammad Mahdi Afshar",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reloadlife/agent-cleaner.git"
+  },
+  "bugs": {
+    "url": "https://github.com/reloadlife/agent-cleaner/issues"
+  },
+  "homepage": "https://github.com/reloadlife/agent-cleaner#readme",
   "type": "module",
   "bin": {
     "agent-cleaner": "src/cli.ts"

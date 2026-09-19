@@ -1,5 +1,7 @@
 # Contributing
 
+Issues and PRs: [reloadlife/agent-cleaner](https://github.com/reloadlife/agent-cleaner).
+
 You need [Bun](https://bun.sh) 1.2+.
 
 ```bash
