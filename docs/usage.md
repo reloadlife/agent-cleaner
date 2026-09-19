@@ -1,5 +1,12 @@
 # Usage
 
+```bash
+bunx @reloadlife/agent-cleaner
+bunx @reloadlife/agent-cleaner --local .
+bunx @reloadlife/agent-cleaner serve
+bunx @reloadlife/agent-cleaner scan --json
+```
+
 ## TUI
 
 ```bash

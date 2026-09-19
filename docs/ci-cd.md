@@ -13,16 +13,26 @@
 
 `.github/workflows/release.yml` runs on tags matching `v*`.
 
-It tests, compiles `agent-cleaner` for linux/macOS (x64 and arm64), packs each binary with `catalog/` and the prebuilt web UI, then publishes a GitHub Release.
+It tests, compiles `agent-cleaner` for linux/macOS (x64 and arm64), packs each binary with `catalog/` and the prebuilt web UI, then:
+
+1. Publishes a GitHub Release with those archives
+2. Publishes `@reloadlife/agent-cleaner` to [GitHub Packages](https://github.com/reloadlife/agent-cleaner/pkgs/npm/agent-cleaner)
+3. Publishes the same package to [npmjs](https://www.npmjs.com/package/@reloadlife/agent-cleaner) when the `NPM_TOKEN` repo secret is set
 
 Cut a release:
 
 ```bash
-git tag v0.1.0
-git push origin v0.1.0
+git tag v0.1.1
+git push origin v0.1.1
 ```
 
-The tag should match `package.json` `version` and a `## v0.1.0` section in `CHANGELOG.md`.
+The tag should match `package.json` `version` and a `## v0.1.1` section in `CHANGELOG.md`.
+
+Then:
+
+```bash
+bunx @reloadlife/agent-cleaner
+```
 
 Install a release binary:
 

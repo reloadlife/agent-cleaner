@@ -33,4 +33,6 @@ Writes must go through `MutationPlan` so backups still apply. Keep MCP `env` / `
 2. Add a `## vX.Y.Z` section to `CHANGELOG.md`.
 3. `git tag vX.Y.Z && git push origin vX.Y.Z`
 
+That tag publishes GitHub Release binaries, GitHub Packages, and npmjs (if `NPM_TOKEN` is set).
+
 CI is `.github/workflows/ci.yml`. CD is `.github/workflows/release.yml`. See [docs/ci-cd.md](docs/ci-cd.md).

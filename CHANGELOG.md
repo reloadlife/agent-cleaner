@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.1.1
+
+- Publish `@reloadlife/agent-cleaner` to npmjs and GitHub Packages
+- Run with `bunx @reloadlife/agent-cleaner`
+
 ## v0.1.0
 
 - Scan Claude Code, Cursor, Codex, Grok, OpenCode, and Gemini CLI extras

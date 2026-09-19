@@ -9,17 +9,29 @@ Supports Claude Code, Cursor, Codex, Grok, OpenCode, and Gemini CLI. Local only.
 Needs [Bun](https://bun.sh) 1.2+.
 
 ```bash
+bunx @reloadlife/agent-cleaner
+```
+
+Or install the CLI:
+
+```bash
+bun add -g @reloadlife/agent-cleaner
+agent-cleaner
+```
+
+From GitHub Packages (needs a GitHub token in `.npmrc`):
+
+```bash
+bunx --registry https://npm.pkg.github.com @reloadlife/agent-cleaner
+```
+
+From source:
+
+```bash
 git clone https://github.com/reloadlife/agent-cleaner.git
 cd agent-cleaner
 bun install
 bun src/cli.ts
-```
-
-Optional global bin:
-
-```bash
-bun link
-agent-cleaner
 ```
 
 Release binaries: [GitHub Releases](https://github.com/reloadlife/agent-cleaner/releases). Unpack the archive and keep `catalog/` next to `./agent-cleaner`.
