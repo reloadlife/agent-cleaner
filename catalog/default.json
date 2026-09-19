@@ -1,0 +1,20 @@
+{
+  "items": [
+    {
+      "id": "find-skills",
+      "kind": "skill",
+      "name": "find-skills",
+      "description": "Help find and install agent skills",
+      "source": { "type": "local", "path": "catalog/bundled/find-skills" },
+      "compatible": ["claude", "cursor", "codex", "grok", "opencode", "gemini"]
+    },
+    {
+      "id": "codegraph-mcp",
+      "kind": "mcp",
+      "name": "codegraph",
+      "description": "Codegraph MCP server over stdio",
+      "source": { "type": "local", "path": "catalog/bundled/codegraph-mcp" },
+      "compatible": ["claude", "cursor", "codex", "grok", "opencode", "gemini"]
+    }
+  ]
+}

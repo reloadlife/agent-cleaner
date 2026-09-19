@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "shadcn": {
+      "command": "npx",
+      "args": ["shadcn"],
+      "headers": { "CONTEXT7_API_KEY": "test-secret-value" }
+    }
+  },
+  "projects": {
+    "/tmp/demo": {},
+    "/no/such/proj": {}
+  }
+}

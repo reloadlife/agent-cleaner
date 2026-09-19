@@ -1,0 +1,17 @@
+node_modules/
+dist/
+build/
+coverage/
+tmp/
+.cache/
+.web/
+.superpowers/
+.agent-cleaner/
+.env
+.env.*
+*.log
+bun-debug.log*
+*.tsbuildinfo
+.DS_Store
+.idea/
+.vscode/

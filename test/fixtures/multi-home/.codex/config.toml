@@ -1,0 +1,4 @@
+model = "gpt-test"
+
+[mcp_servers.codegraph]
+command = "codegraph"
