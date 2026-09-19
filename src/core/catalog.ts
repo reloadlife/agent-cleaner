@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto"
+import { existsSync } from "node:fs"
 import { mkdir } from "node:fs/promises"
 import { basename, dirname, isAbsolute, join, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
@@ -6,7 +7,17 @@ import { parseSkillFrontmatter } from "./adapters/common"
 import { pathExists, readJson } from "./io"
 import type { CatalogItem, ItemKind, Origin } from "./types"
 
-const repoRoot = resolve(fileURLToPath(new URL("../..", import.meta.url)))
+export function projectRoot(): string {
+  const fromMeta = resolve(fileURLToPath(new URL("../..", import.meta.url)))
+  if (!fromMeta.includes("$bunfs") && existsSync(join(fromMeta, "catalog", "default.json"))) {
+    return fromMeta
+  }
+  const nextToBin = dirname(process.execPath)
+  if (existsSync(join(nextToBin, "catalog", "default.json"))) return nextToBin
+  return fromMeta
+}
+
+const repoRoot = projectRoot()
 
 export function builtinCatalogPath(): string {
   return join(repoRoot, "catalog", "default.json")

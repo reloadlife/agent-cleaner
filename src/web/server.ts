@@ -1,8 +1,8 @@
 import { randomUUID } from "node:crypto"
-import { join } from "node:path"
+import { dirname, join } from "node:path"
 import { fileURLToPath } from "node:url"
 import { Hono } from "hono"
-import { loadCatalog, stageOrigin } from "../core/catalog"
+import { loadCatalog, projectRoot, stageOrigin } from "../core/catalog"
 import { install, previewInstall } from "../core/install"
 import { pathExists, readJson } from "../core/io"
 import { redactInventory } from "../core/redact"
@@ -102,13 +102,19 @@ export function createWebApp(opts: ScanOptions) {
 
 export async function serveWeb(opts: ScanOptions & { port: number; bind?: string }) {
   const api = createWebApp(opts)
-  const uiRoot = join(fileURLToPath(new URL(".", import.meta.url)), "ui")
-  const dist = join(fileURLToPath(new URL("../..", import.meta.url)), "dist", "ui")
-  await Bun.build({
-    entrypoints: [join(uiRoot, "index.html")],
-    outdir: dist,
-    minify: true,
-  })
+  const metaDir = fileURLToPath(new URL(".", import.meta.url))
+  const compiled = metaDir.includes("$bunfs")
+  const root = compiled ? dirname(process.execPath) : projectRoot()
+  const uiRoot = compiled ? join(root, "src", "web", "ui") : join(metaDir, "ui")
+  const dist = join(root, "dist", "ui")
+  const prebuilt = join(dist, "index.html")
+  if (!(await pathExists(prebuilt))) {
+    await Bun.build({
+      entrypoints: [join(uiRoot, "index.html")],
+      outdir: dist,
+      minify: true,
+    })
+  }
 
   const hostname = opts.bind ?? "127.0.0.1"
   const server = Bun.serve({

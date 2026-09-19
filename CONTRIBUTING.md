@@ -26,3 +26,11 @@ bun src/cli.ts scan --json
 3. Add a fixture under `test/fixtures/` and a scan test.
 
 Writes must go through `MutationPlan` so backups still apply. Keep MCP `env` / `headers` out of logs; `redactInventory` is the serialization boundary.
+
+## Release
+
+1. Bump `version` in `package.json`.
+2. Add a `## vX.Y.Z` section to `CHANGELOG.md`.
+3. `git tag vX.Y.Z && git push origin vX.Y.Z`
+
+CI is `.github/workflows/ci.yml`. CD is `.github/workflows/release.yml`. See [docs/ci-cd.md](docs/ci-cd.md).

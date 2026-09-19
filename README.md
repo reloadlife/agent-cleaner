@@ -22,6 +22,8 @@ bun link
 agent-cleaner
 ```
 
+Release binaries: [GitHub Releases](https://github.com/reloadlife/agent-cleaner/releases). Unpack the archive and keep `catalog/` next to `./agent-cleaner`.
+
 ## Usage
 
 ```bash
@@ -72,6 +74,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 - [Usage](docs/usage.md) — TUI keys, web, headless CLI
 - [Architecture](docs/architecture.md) — scan, plans, backups
 - [Agents](docs/agents.md) — paths and what each adapter reads
+- [CI / CD](docs/ci-cd.md) — tests and tagged releases
 - [Security](SECURITY.md)
 
 ## License

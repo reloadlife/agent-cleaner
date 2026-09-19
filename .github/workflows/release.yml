@@ -1,0 +1,105 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+      - run: bun install --frozen-lockfile
+      - run: bun test
+      - run: bun run typecheck
+
+  build:
+    needs: test
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: bun-linux-x64
+            asset: agent-cleaner-linux-x64
+          - os: ubuntu-latest
+            target: bun-linux-arm64
+            asset: agent-cleaner-linux-arm64
+          - os: macos-latest
+            target: bun-darwin-arm64
+            asset: agent-cleaner-darwin-arm64
+          - os: macos-latest
+            target: bun-darwin-x64
+            asset: agent-cleaner-darwin-x64
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+      - run: bun install --frozen-lockfile
+      - name: Build web UI
+        run: bun run web:build
+      - name: Compile
+        run: |
+          bun build src/cli.ts --compile --target ${{ matrix.target }} --outfile dist/${{ matrix.asset }}
+      - name: Pack
+        run: |
+          mkdir -p dist/pack/${{ matrix.asset }}
+          cp dist/${{ matrix.asset }} dist/pack/${{ matrix.asset }}/agent-cleaner
+          chmod +x dist/pack/${{ matrix.asset }}/agent-cleaner
+          cp -R catalog dist/pack/${{ matrix.asset }}/
+          mkdir -p dist/pack/${{ matrix.asset }}/dist
+          cp -R dist/ui dist/pack/${{ matrix.asset }}/dist/ui
+          tar -C dist/pack -czf dist/${{ matrix.asset }}.tar.gz ${{ matrix.asset }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.asset }}
+          path: dist/${{ matrix.asset }}.tar.gz
+          if-no-files-found: error
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          NOTES=$(mktemp)
+          if [[ -f CHANGELOG.md ]] && grep -q "^## ${TAG}" CHANGELOG.md; then
+            awk -v tag="## ${TAG}" '
+              $0 == tag {on=1; print; next}
+              on && /^## / {exit}
+              on {print}
+            ' CHANGELOG.md > "$NOTES"
+          else
+            echo "agent-cleaner ${TAG}" > "$NOTES"
+          fi
+          gh release create "$TAG" \
+            --title "$TAG" \
+            --notes-file "$NOTES" \
+            --verify-tag \
+            artifacts/*.tar.gz
